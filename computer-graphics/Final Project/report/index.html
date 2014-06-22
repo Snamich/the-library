@@ -1,0 +1,112 @@
+<!-- this and style sheet borrowed from Derek Escontrias, thanks! -->
+<!DOCTYPE HTML PUBLIC
+"-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="index_files/main.css" />
+</head>
+
+<body>
+
+<!-- BEGIN: Body -->
+<div id="body">
+
+<!-- BEGIN: Page -->
+<div id="page">
+
+<!-- BEGIN: Header -->
+<div id="header">
+<div id="title">
+<h2>Ray Tracing</h2>
+</div>
+<div id="author">
+<h3>Scott Chatham</h3>
+</div>
+</div>
+<!-- END: Header -->
+
+<!-- BEGIN: Content -->
+<div id="content">
+
+<!-- BEGIN: Overview -->
+<div id="overview">
+<h3>Overview</h3>
+<p>This project aims to create a create a basic ray tracer
+that can simulate the effects of reflection and refraction
+on basic geometric objects. In nature, light travels in rays
+that interact with surfaces by absorption, refraction, and
+reflectio and when these rays enter our eyes the interaction
+with surfaces determines the image of the scene. A ray tracer
+captures this interaction by simulating the rays and following
+them around the scene. When an interaction occurs, new rays
+are recursively created and followed to find out information
+such as the amount of reflection, refraction, and shadow. This
+makes it much simpler to compute this information compared to
+a typical scanline renderer and creates much more realistic
+images.</p>
+
+</div>
+<!-- END: Overview -->
+
+<!-- BEGIN: Manual -->
+<div id="manual">
+<h3>Manual</h3>
+
+<p>Once all the code is loaded a few things must be set up before rendering a scene.
+The global variable *vp* must be set up as an instance of the view plane class. Once
+this object has been created its sampler points must be generated.</p>
+
+<p>Next our camera must be created and initialized. This is done by setting its eye and
+lookat positions as well as the distance from the eye to the viewplane. After that
+its uvw axes can be generated and the camera is now set up.</p>
+
+<p>Following that we can now add different scene objects to scene such as an ambient
+light, point or directional lights, as well as the geometric objects of our scene. Once
+our scene is created we can render it with the following command:</p>
+
+<p>(render-scene *camera* pathname) where pathname is the path to the file we wish
+to render the image as such as "~/". The image will be drawn to that specified file
+and it's done. (reset-scene) can be called to remove all lights and geometric objects
+so you can render another scene.</p>
+
+<p>Example scenes can be found in the build directory of the project.</p>
+
+</div>
+<!-- END: Manual -->
+
+<!-- BEGIN: Overview Image -->
+<div id="images">
+<h3>Screenshots</h3>
+<img src="index_files/ref7.png"/>
+<p>An image showing off perfect specular reflection.</p>
+<img src="index_files/spec17.png"/>
+<p>An image showing off glossy specular reflection.</p>
+</div>
+<!-- END: Overview Image -->
+
+<!-- BEGIN: References -->
+<div id="references">
+<h3>References</h3>
+<ol>
+<li>Physically Based Rendering: From Theory to Implementation</br>
+Matt Pharr, Greg Humphreys</br>
+Morgan Kaufmann, 2010</li>
+</ol>
+</div>
+<!-- END: References -->
+
+</div>
+<!-- END: Content -->
+
+</div>
+<!-- END: Page -->
+
+</div>
+<!-- END: Body -->
+
+</body>
+</html>
+
+
+<!-- $Id: index.html 2 2012-02-03 06:01:57Z derek $ -->

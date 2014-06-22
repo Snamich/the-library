@@ -1,0 +1,8 @@
+auxlib.o: auxlib.cc auxlib.h
+stringset.o: stringset.cc stringset.h
+yyparse.o: yyparse.cc astree.h auxlib.h lyutils.h yyparse.h
+yylex.o: yylex.cc auxlib.h lyutils.h astree.h yyparse.h
+astree.o: astree.cc astree.h auxlib.h stringset.h lyutils.h yyparse.h
+lyutils.o: lyutils.cc lyutils.h astree.h auxlib.h yyparse.h
+typecheck.o: astree.h auxlib.h lyutils.h symtable.h
+oc.o: oc.cc astree.h auxlib.h lyutils.h yyparse.h stringset.h symtable.h typecheck.h ic.cc

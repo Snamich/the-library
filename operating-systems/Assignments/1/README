@@ -1,0 +1,5 @@
+Scott Chatham
+CMPS 111
+Assignment 1
+
+The included makefile has instructions for building. Running 'make all' will produce an executable called nas that when run will launch the shell.

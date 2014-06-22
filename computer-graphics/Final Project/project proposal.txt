@@ -1,0 +1,13 @@
+Scott Chatham
+schatham@ucsc.edu
+CMPS160 S13
+Final Project Ideas
+
+Ranked in order of preference.
+
+1) ray tracer with materials, samplers, acceleration structures, etc.
+
+2) some kind of cross platform 2d rendering engine with sprites, tile maps, etc.
+Not sure how this would rank on scale of difficulty.
+
+3) 3d mazes. Represent maps using some kind data format, load them in, create a first person camera that represents the player while they try to find their way out.

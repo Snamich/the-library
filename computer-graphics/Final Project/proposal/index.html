@@ -1,0 +1,142 @@
+<!-- this and style sheet borrowed from Derek Escontrias, thanks! -->
+<!DOCTYPE HTML PUBLIC
+"-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="index_files/main.css" />
+</head>
+
+<body>
+
+<!-- BEGIN: Body -->
+<div id="body">
+
+<!-- BEGIN: Page -->
+<div id="page">
+
+<!-- BEGIN: Header -->
+<div id="header">
+<div id="title">
+<h2>Ray Tracing</h2>
+</div>
+<div id="author">
+<h3>Scott Chatham</h3>
+</div>
+</div>
+<!-- END: Header -->
+
+<!-- BEGIN: Content -->
+<div id="content">
+
+<!-- BEGIN: Overview -->
+<div id="overview">
+<h3>Overview</h3>
+<p>This project aims to create a create a basic ray tracer
+that can simulate the effects of reflection and refraction
+on basic geometric objects. In nature, light travels in rays
+that interact with surfaces by absorption, refraction, and
+reflectio and when these rays enter our eyes the interaction
+with surfaces determines the image of the scene. A ray tracer
+captures this interaction by simulating the rays and following
+them around the scene. When an interaction occurs, new rays
+are recursively created and followed to find out information
+such as the amount of reflection, refraction, and shadow. This
+makes it much simpler to compute this information compared to
+a typical scanline renderer and creates much more realistic
+images.</p>
+
+<!-- BEGIN: Overview Image -->
+<div id="overview-image">
+<img src="index_files/realistic.png"/>
+<p>An image rendered using ray tracing.</p>
+</div>
+<!-- END: Overview Image -->
+</div>
+<!-- END: Overview -->
+
+<!-- BEGIN: Goal -->
+<div id="goal">
+<h3>Goals (Components and Features)</h3>
+<ul>
+<li>Geometric Objects.</li>
+<li>Scene Objects.</li>
+<li>Ray Tracing Algorithm.</li>
+</ul>
+
+<p>The first thing to do is to create an interface for the
+geometric objects that will be implemented. These will include
+spheres, planes, triangles/meshes. An object oriented approach
+will be used that provides an interface standard to each object.</p>
+
+<p>Next the scene objects need to be created which will include
+objects such as lights and cameras. Additionally an acceleration
+structure will be implemented in order to facilitate fast ray hit
+detection.</p>
+
+<p>The last component will be implementing the ray tracing
+algorithm. This will involve creating the ray objects that will
+be cast out into the scene (normal rays, shadow rays), samplers
+to contain the relevant information obtained on a ray cast, and
+implementing the recursive ray tracing algorithm so that shadow,
+refraction, and reflection rays can be recast on surface
+collisions.</p>
+
+</div>
+<!-- END: Goal -->
+
+<!-- BEGIN: Timeline -->
+<div id="timeline">
+<h3>Timeline</h3>
+<p>Let time t = 0 denote the Friday that the final proposal is
+due. The proposed timeline is as follows.</p>
+<table>
+<tr>
+<th>Time (weeks)</th>
+<th>Job</th>
+</tr>
+<tr>
+<td>0</td>
+<td>Geometric Primitives.</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Scene Objects.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Ray Tracing Algorithm.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Scene Reader.</td>
+</tr>
+</table>
+</div>
+<!-- END: Timeline -->
+
+<!-- BEGIN: References -->
+<div id="references">
+<h3>References</h3>
+<ol>
+<li>Physically Based Rendering: From Theory to Implementation</br>
+Matt Pharr, Greg Humphreys</br>
+Morgan Kaufmann, 2010</li>
+</ol>
+</div>
+<!-- END: References -->
+
+</div>
+<!-- END: Content -->
+
+</div>
+<!-- END: Page -->
+
+</div>
+<!-- END: Body -->
+
+</body>
+</html>
+
+
+<!-- $Id: index.html 2 2012-02-03 06:01:57Z derek $ -->

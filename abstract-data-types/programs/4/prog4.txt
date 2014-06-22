@@ -1,0 +1,61 @@
+
+             Progr 4 - CMPS 101, W13               WARMUTH
+Handed out 3-5-13                           Due 3-13-13 in locker
+
+All work is to be done by yourself!
+
+Augment RBTs to accommodate the following operations:
+
+O(n) time:
+printtree   prints content of entire tree a smart format of your choice    
+
+O(log n) time:
+insert(k)   inserts key k into your tree
+find(k)     returns pointer to node with key k if in tree 
+            and nil otherwise
+
+O(1):
+create         initialize your tree
+successor(n)   return key of successor to node n, when n is a pointer
+predecessor(n) return key of successor to node n, when n is a pointer
+printnode(n)   prints all fields of node n in a smart format of your choice
+
+min   returns min key in tree
+max   returns min key in tree
+
+Input has the following format:
+
+i 23               "insert key 23"
+i 27               "insert key 27"
+i 32               "insert key 32"
+i 16               "insert key 16"
+i -1               "insert key -1"
+pt                 "prints entire current tree"
+f -100             "returns nil because -100 not in tree"
+f 32               "finds node with key 32, stores this in variable current_node"
+pn                 "prints all fields of current_node"
+s                  "assigns current_node to successor(current_node)"
+pn                 "prints all fields of current_node"
+p                  "assigns current_node to predecessor(current_node)"
+p                  "assigns current_node to predecessor(current_node)"
+pn                 "prints all fields of current_node"
+min                "returns min"
+max                "returns max"
+
+
+Hints:
+
+Start with modules create, insert, printtree.
+Pseudo code is in the text book.
+Test your all your operations.
+
+Now implement find and printnode.
+
+Next add min max info in the header and maintain it by
+updating your insert procedure.
+
+Finally add additional fields for implementing the predecessor
+and successor operation.
+
+Writeup: reason for each procedure why it has the required
+time bound (A paragraph for each operation suffices).

@@ -1,0 +1,24 @@
+i 1
+i 2
+i 3
+i 4
+i 5
+i 6 
+i 7
+i 8
+f 6
+pn
+s
+pn
+s
+pn
+s
+pn
+f 2 
+s
+pn
+s
+pn
+s
+pn
+max

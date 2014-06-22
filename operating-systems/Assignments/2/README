@@ -1,0 +1,11 @@
+Scott Chatham
+CMPS 111
+Assignment 2
+
+Simply run 'make' to create the threads executable. When ran, a bunch of threads
+will be created and initialized followed by running of the scheduler. The scheduler
+will choose a thread to run based off a lottery scheduling algorithm which will
+call the function associated with the program. This function will derement a work
+counter until a timer goes off and the scheduler is called again or there's no more work
+for that thread to do which will cause it to be deleted. Once all work has been done by
+all the threads the program will exit.

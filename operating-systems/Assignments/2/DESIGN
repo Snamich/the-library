@@ -1,0 +1,80 @@
+Scott Chatham
+CMPS 111
+Assignment 2
+
+Purpose:
+This document specifies the design of a scheduler implementation.
+
+Data Structures:
+1. thread - represents a thread
+   - represented as a structure of several fields
+   1. a thread number - int
+   2. number of tickets - int
+   3. amount of work to do - int
+
+Operations:
+1. void thread_create(int, int, void (*)(void))
+   - Description: create and initialize a thread
+   - Input: an int, an int, a function
+   - Output: nothing
+   - Result: a thread is created, initialized, and stored in the global thread array
+
+2. void thread_delete(Thread *)
+   - Description: deletes a thread
+   - Input: a thread
+   - Output: nothing
+   - Result: thread is removed from the pool and its memory freed
+
+3. void thread_print(Thread *)
+   - Description: print a thread
+   - Input: a thread
+   - Output: nothing
+   - Result: the state of the thread is printed to the console
+
+4. void thread_scheduler()
+   - Description: determines what thread runs next
+   - Input: nothing
+   - Output: nothing
+   - Result: a thread is selected to run or the program is finished
+
+5. void thread_work()
+   - Description: assigned as each threads function
+   - Input: nothing
+   - Output: nothing
+   - Result: some work has been done by a thread
+
+6. void timer_handler(int)
+   - Description: called whenever the timer goes off
+   - Input: an int (purely to follow handler declaration)
+   - Output: nothing
+   - Result: the alarm signal is reset and the scheduler is given control
+
+I implemented a lottery scheduling algorithm for my thread scheduler. To facilitate
+this, a thread structure was created to hold a number of tickets as well as some amount 
+of work to do. Tickets are not actually assigned, but instead a count of how many tickets
+a thread holds is maintained. A threads work is just an arbitrary construct used for
+illustrative purposes.
+
+When the program starts, a separate thread is created whose job is to run the scheduling
+algorithm. After this thread is created, a number of other threads are created and
+initialized. These are stored in a global array for ease of access throughout the program.
+Once everything is initialized, control is given to the scheduling thread which determines
+which thread is allowed to run. It does this by getting a random number, r, in the range
+[0,1]. Next, the ratio of tickets/total_tickets of the first thread is compared with the
+random number and if r is between 0 and this ratio then that thread is the lottery winner
+and gets to run. Otherwise we check the next using the sum of the previous threads' ratios
+of tickets/total_tickets with the next threads ratio. By doing this we can simulate a lottery
+system without having to track ticket objects. Right now all threads have the same priority
+(same amount of tickets), but this could be easily changed as long as we keep track of the
+total number of tickets out there for our later calculation.
+
+To implement a pre-emptive system a signal handler is set up to wait for a SIGALRM
+signal. When this handler is called it sets itself back up and then passes control
+back to the scheduler thread. Once the scheduler has selected which thread will run,
+it sets up a timer to go off after 50 microseconds. This quantum was chosen along with the
+amount of work so each thread has enough work to last a couple rounds and the effects of
+the scheduler can be witnessed. Depending on when the timer goes off a thread might not
+finish printing out its progress. This is fine as the work was still done. Care had to be
+taken around the deletion of a thread as an interruption at this point could throw the
+program in an unstable state. To protect against this the timer is turned off once a thread
+enters the deletion function and is turned back on once the scheduler is given control back.

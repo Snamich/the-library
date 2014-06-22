@@ -1,0 +1,12 @@
+i 1
+f 6
+f 1
+pn
+s
+s
+pn
+f 3
+p
+pn
+min
+max

@@ -1,0 +1,62 @@
+Scott Chatham
+CMPS 111
+Assignment 1
+
+Purpose:
+This document specifies the design of a shell program.
+
+Data Structures:
+1. job - represents a command to execute
+   - represented as a structure of several fields
+     1. an array of arguments - char**
+     2. a command - char*
+     3. a redirect filename - char*
+     4. is the command redirected - int
+     5. do we wait for this command - int
+
+Operations:
+1. void DisplayPrompt()
+   - Description: prints our shell prompt
+   - Input: nothing
+   - Output: nothing
+   - result: prompt is printed to the console
+
+2. FILE* HandleRedirection( job )
+   - Description: checks if I/O redirection is necessary for the given job and sets it up
+   - Input: a job
+   - Output: a file
+   - result: I/O for the given command is set up
+
+3. void ParseArguments( char**, job )
+   - Description: creates a job given input from the shell
+   - Input: an array of arguments, a job
+   - Output: nothing
+   - result: a job is created based off input from the shell
+
+4. char** ReadInput()
+   - Description: reads input from the shell and checks for special commands
+   - Input: nothing
+   - Output: an array of arguments
+   - result: an array of arguments is returned or a special command is ran
+
+5. void RunJob( job )
+   - Description: attempts to run the given job
+   - Input: a job
+   - Output: nothing
+   - result: the given job has been executed or an error reported
+
+6. void Job_print( job )
+   - Description: print out the fields of the given job
+   - Input: a job
+   - Output: nothing
+   - result: the job is printed to stdin
+
+7. void Job_reset( job )
+   - Description: clear out the fields of the given job
+   - Input: a job
+   - Output: nothing
+   - result: the given job is empty
+
+My design separates the logic of what a command is and the task of running a command. This is done by creating a Job structure that contains all the relevant pieces of a command such as the name of the command, its arguments, if it requires a redirection, etc. Once our job structure is built a number of functions operate on it to carry out the specified job.
+
+RunJob first makes sure that there is a command to run and then forks into parent and child processes to carry out the command. Within the child process redirection is handled by checking if a redirection is necessary and if so altering stdin or stdout.

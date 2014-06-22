@@ -1,0 +1,14 @@
+i 41
+i 38
+i 31
+i 12
+i 19
+i 8
+pt
+f 5
+pn
+s
+pn
+p
+pn
+max

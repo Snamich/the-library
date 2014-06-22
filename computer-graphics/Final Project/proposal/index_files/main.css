@@ -1,0 +1,93 @@
+#body {
+}
+
+#page {
+    width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#header {
+    border: 5px solid black;
+    margin-bottom: 5px;
+    padding: 8px;
+}
+
+#title {
+    text-align: center;
+    /*color: red;*/
+}
+
+#author {
+    text-align: center;
+}
+
+#content {
+}
+
+#overview {
+    border: 5px solid black;
+    margin-bottom: 5px;
+    padding: 8px;
+}
+
+/*div#overview h3 {
+    text-decoration: underline;
+}*/
+
+#overview-image {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+div#overview-image img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+div#overview-image p {
+    font-weight: bold;
+    text-align: center;
+}
+
+#goal {
+    border: 5px solid black;
+    margin-bottom: 5px;
+    padding: 8px;
+}
+
+#timeline {
+    border: 5px solid black;
+    margin-bottom: 5px;
+    padding: 8px;
+}
+
+div#timeline table {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+div#timeline table, td, th {
+    border: 1px solid seagreen;
+    padding: 8px;
+}
+
+div#timeline th {
+    background-color: seagreen;
+    color: white;
+}
+
+#references {
+    border: 5px solid black;
+    margin-bottom: 5px;
+    padding: 8px;
+}
+
+
+/* $Id: main.css 2 2012-02-03 06:01:57Z derek $ */

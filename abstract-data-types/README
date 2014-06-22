@@ -1,0 +1,28 @@
+Program 1:
+Implements a simple Conway Game of Life simulation in C. The code was written in C so that the core of the program could be reused in an iOS app that just had to rewrite the display function for a graphical representation on an iOS device.
+
+Program 2:
+Augments a physics simulation of colliding balls with a heap data structure to speed up searching of collision times.
+
+Program 3:
+Explores dynamic programming by finding solutions to a simple peg jumping game in Common Lisp using memoization.
+
+Program 4:
+Augments a red-black tree implemented in Java with the following operations:
+
+O(n) time:
+printtree   prints content of entire tree a smart format of your choice    
+
+O(log n) time:
+insert(k)   inserts key k into your tree
+find(k)     returns pointer to node with key k if in tree 
+            and nil otherwise
+
+O(1):
+create         initialize your tree
+successor(n)   return key of successor to node n, when n is a pointer
+predecessor(n) return key of successor to node n, when n is a pointer
+printnode(n)   prints all fields of node n in a smart format of your choice
+
+min   returns min key in tree
+max   returns min key in tree
