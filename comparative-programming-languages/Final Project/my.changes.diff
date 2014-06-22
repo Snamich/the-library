@@ -1,0 +1,132 @@
+diff --git a/src/compiler/codegen.lisp b/src/compiler/codegen.lisp
+index b0107e1..fbe6abc 100644
+--- a/src/compiler/codegen.lisp
++++ b/src/compiler/codegen.lisp
+@@ -14,6 +14,79 @@
+ 
+ (in-package "SB!C")
+ 
++
++;; enable/disable peephole pass
++(defvar *pop-pass* nil)
++
++;; peephole pass
++;; only checks for unnecessary movs right now, maybe keep a list of
++;; possible pop functions that we can loop over against the
++;; vop buffer. it would probably be best to have some kind of predicate
++;; that tests for an initial condition that will trigger an optimization,
++;; that way we don't have to do multiple passes over the segment multiple
++;; times. either this, or all optimizations have checks at the beginning
++;; so that we can exit out of the function quickly if it doesn't match
++(defun pop-pass (vops)
++  (unless *pop-pass*
++    (return-from pop-pass vops))
++  (do ((peeped nil (push (car rem-vops) peeped))
++       (rem-vops vops (cdr rem-vops)))
++      ((null rem-vops) (reverse peeped))
++    (multiple-value-bind (result buf) (mov-pop rem-vops)
++      (when result
++        ;; this should start over and perform another pass or keep going
++        ;; if the pass was fully implemented, but since we're working
++        ;; with simple cases we can just return
++        (dolist (vop buf)
++          (push vop peeped))
++        (return (reverse peeped))))))
++
++(defun mov-pop (vops)
++  (let* ((cur (car vops))
++         (type (vop-info-name (vop-info cur)))
++         (rem-vops (cdr vops)))
++    (when (equal type 'MOVE)
++      ;; have a mov, get the result TN to compare to args of subsequent vops
++      ;; currently only checks the next vop, but should look a little further
++      ;; we should also include a check to see if there are any movs following
++      ;; this one that have the same result TN as our original because
++      ;; we could just eliminate the first if that's the case
++      (let ((mov-tn-res (tn-ref-tn (vop-results cur)))
++            (mov-tn-arg (tn-ref-tn (vop-args cur)))
++            (buf nil)
++            (next-arg (vop-args (car rem-vops))))
++        (unless (null next-arg)
++          (let ((next-tn-arg (tn-ref-tn next-arg)))
++            (when (equal mov-tn-res next-tn-arg)
++              ;; have a match, merge the two movs together
++              (setf (tn-ref-tn (vop-args (car rem-vops)))
++                    mov-tn-arg)
++              (push (car rem-vops) buf)
++              ;; and fix any vops that relied on them
++              (do* ((fix-vops (cdr rem-vops) (cdr fix-vops))
++                    (vop (car fix-vops) (car fix-vops)))
++                   ((null fix-vops) nil)
++                ;; if the result of this vop is the arg of
++                ;; our mov opt then we're done
++                (when (and (vop-results vop)
++                           (equal (tn-ref-tn (vop-results vop)) mov-tn-arg))
++                  (dolist (v (cdr fix-vops))
++                    (push v buf))
++                  (return))
++                ;; otherwise, if the arg of this vop is the result
++                ;; of the mov we eliminated then fix it
++                (when (and (vop-args vop)
++                           (equal (tn-ref-tn (vop-args vop)) mov-tn-res))
++                  (setf (tn-ref-tn (vop-args vop)) mov-tn-arg)
++                  ;; check if the vop has multiple arguments and fix them if needed
++                  (do ((next-tn-arg (tn-ref-across (vop-args vop)) (tn-ref-across next-tn-arg)))
++                      ((null next-tn-arg) nil)
++                    (when (equal (tn-ref-tn next-tn-arg) mov-tn-res)
++                      (setf (tn-ref-tn next-tn-arg) mov-tn-arg))))
++                (push vop buf))
++              (return-from mov-pop (values 't (reverse buf))))))))
++    (values nil vops)))
++
+ ;;;; utilities used during code generation
+ 
+ ;;; the number of bytes used by the code object header
+@@ -92,6 +165,7 @@
+       (t
+        (format t "~0,8T~A~@[~0,8T~{~A~^, ~}~]~%" inst args))))
+   (values))
++
+ 
+ ;;;; GENERATE-CODE and support routines
+ 
+@@ -138,12 +212,15 @@
+         (*trace-table-info* nil)
+         (*prev-segment* nil)
+         (*prev-vop* nil)
+-        (*fixup-notes* nil))
++        (*fixup-notes* nil)
++        (buf nil))
+     (let ((label (sb!assem:gen-label)))
+       (setf *elsewhere-label* label)
+       (sb!assem:assemble (*elsewhere*)
+         (sb!assem:emit-label label)))
++    ;; whats an ir2 block - a basic block
+     (do-ir2-blocks (block component)
++      ;; whats 1block
+       (let ((1block (ir2-block-block block)))
+         (when (and (eq (block-info 1block) block)
+                    (block-start 1block))
+@@ -171,14 +248,19 @@
+                       lab)
+                 (emit-label-elsewhere lab))
+               (setq prev-env env)))))
++      ;; get the first vop of the block and while there are more to process,
++      ;; keep processing them
+       (do ((vop (ir2-block-start-vop block) (vop-next vop)))
+           ((null vop))
+-        (let ((gen (vop-info-generator-function (vop-info vop))))
+-          (if gen
++        ;; here's where we intercept them for buffering
++        (push vop buf)))
++    (dolist (vop (pop-pass (reverse buf)))
++      (let ((gen (vop-info-generator-function (vop-info vop))))
++        (if gen
+             (funcall gen vop)
+             (format t
+                     "missing generator for ~S~%"
+-                    (template-name (vop-info vop)))))))
++                    (template-name (vop-info vop))))))
+     (sb!assem:append-segment *code-segment* *elsewhere*)
+     (setf *elsewhere* nil)
+     #!+inline-constants

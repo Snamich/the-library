@@ -1,1 +1,3 @@
-Various assignments implemented in Haskell, Prolog, and Javascript.
+Various assignments implemented in Haskell, Prolog, and Javascript as well as my final project which worked on a proof of concept for a peephole optimizer for the SBCL compiler.
+
+The final report for the final project is not quite accurate as afterwards I found out why the code emission part is so difficult and that my 2nd approach worked on simple cases, but generally broke the compiler.
