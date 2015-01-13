@@ -1,0 +1,59 @@
+{{extend 'plugin_layouts/layouts/KeepitSimple.html'}}
+
+<form><input type="hidden" id="id" name="id" value="{{=id}}" /></form>
+<form><input type="hidden" id="lat" name="lat" value="" /></form>
+<form><input type="hidden" id="lng" name="lng" value="" /></form>
+
+<script>
+$(document).ready(function(){
+ var map = new GMaps({
+    el: '#basic_map',
+    lat: 36.9720,
+    lng: 122.0263,
+  });
+
+GMaps.geolocate({
+  success: function(position) {
+    map.setCenter(position.coords.latitude, position.coords.longitude);
+  },
+  error: function(error) {
+    alert('Geolocation failed: '+error.message);
+  },
+  not_supported: function() {
+    alert("Your browser does not support geolocation");
+  },
+});
+
+GMaps.on('click', map.map, function(event) {
+    var lat = event.latLng.lat();
+    var lng = event.latLng.lng();
+
+    jQuery('#lat').val(lat);
+    jQuery('#lng').val(lng);
+
+    var template = $('#edit_marker_template').text();
+
+    ajax('{{=URL('default','set_location')}}', ['id', 'lat', 'lng'], 'target');
+    map.removeMarkers();
+
+    map.addMarker({
+      lat: lat,
+      lng: lng,
+      title: 'Meeting',
+    });
+});
+});
+
+</script>
+
+<div align="center"
+     <div id="basic_map" style="height:400px; width:750px; margin-left: 15px;
+                                margin-top: 15px; margin-bottom: 15px;"></div>
+</div>
+
+<div align="center"
+     <p>Select a meeting location and press submit.</p>
+
+     {{=A(T("Submit"), _href=URL('default','view_date', args=id), _class='btn', _style='margin-top: 1em;')}}
+     {{=A(T("Cancel"), _href=URL('default','home'), _class='btn', _style='margin-top: 1em;')}}
+</div>

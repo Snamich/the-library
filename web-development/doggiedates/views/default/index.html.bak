@@ -1,0 +1,12 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+<h3></h3>
+
+<h2>{{=T('Connect your pet with')}}</h2>
+<h2>{{=T('his best friend')}}</h2>
+<ul>
+  <li>{{=T('Search for dogs in your area')}}</li>
+  <li>{{=T('Find ')}}</li>
+  <li>{{=T('Arrange a playdate for your dog')}}</li>
+</ul>

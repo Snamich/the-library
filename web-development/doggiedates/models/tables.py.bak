@@ -1,0 +1,46 @@
+# coding: utf8
+
+from datetime import datetime
+
+def get_email():
+    if auth.user:
+        return auth.user.email
+    else:
+        return 'None'
+
+db.define_table('pet',
+                Field('username', default = get_email()), # who does the pet belong to
+                Field('pet_name', 'string', label = 'Name', required = True),
+                Field('breed', 'string', label = 'Breed', required = True),
+                Field('picture', 'upload'),
+                Field('personality', 'text', required = True),
+                Field('hobbies', 'text', required = True),
+                Field('availability', 'text', required = True), # manually enter for now, see if can be made easier
+)
+
+db.pet.pet_name.widget = lambda f,v: SQLFORM.widgets.string.widget(f, v, _placeholder='Pet Name')
+db.pet.breed.widget = lambda f,v: SQLFORM.widgets.string.widget(f, v, _placeholder='Breed')
+db.pet.personality.widget = lambda f,v: SQLFORM.widgets.string.widget(f, v, _placeholder='How would you describe your pet\s personality?')
+db.pet.hobbies.widget = lambda f,v: SQLFORM.widgets.string.widget(f, v, _placeholder='What does your pet like to do?')
+db.pet.availability.widget = lambda f,v: SQLFORM.widgets.string.widget(f, v, _placeholder='When is your pet available to play?')
+
+db.pet.id.readable = db.pet.writable = False
+db.pet.username.readable = db.pet.username.writable = False
+
+db.define_table('greeting',
+                Field('username_from', required = True, default = get_email()),
+                Field('pet_name_from', 'string', required = True, label = 'From'), # should be autofilled eventually
+                Field('username_to', required = True, label = 'To User'), # should be autofilled eventually
+                Field('pet_name_to', 'string', required = True, label = 'To'), # should be autofilled eventually
+                Field('greeting', 'text', required = True),
+)
+
+db.greeting.pet_name_from.widget = lambda f,v: SQLFORM.widgets.string.widget(f, v, _placeholder='Enter your pet\'s name')
+db.greeting.pet_name_to.widget = lambda f,v: SQLFORM.widgets.string.widget(f, v, _placeholder='Enter their pet\'s name')
+db.greeting.greeting.widget = lambda f,v: SQLFORM.widgets.string.widget(f, v, _placeholder='Say hello!')
+
+db.greeting.id.readable = db.greeting.id.writable = False
+db.greeting.username_from.readable = db.greeting.username_from.writable = False
+db.greeting.username_to.readable = db.greeting.username_to.writable = False
+db.greeting.username_to.requires = [IS_EMAIL(error_message='Invalid email'),
+                                    IS_IN_DB(db, db.auth_user.email, error_message='Not a valid user.')]

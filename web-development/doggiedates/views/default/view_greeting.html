@@ -1,0 +1,25 @@
+{{extend 'plugin_layouts/layouts/KeepitSimple.html'}}
+
+<div align="center" style="padding:40px">
+  <img src="{{=URL('download', args=pet.picture)}}"
+       style="width:400px; height:400px; margin-bottom: 5px;" />
+</div>
+
+<div align="center" style="margin-bottom: 15px;">
+  <p>{{=record.pet_name_from}} says {{=record.greeting}} to {{=record.pet_name_to}}</p>
+</div>
+
+<div class="center-justified">
+    <ul>
+    <p><b>Name:</b> {{=pet.pet_name}}</p>
+    <p><b>Breed:</b> {{=pet.breed}}</p>
+    <p><b>Hobbies:</b> {{=pet.hobbies}}</p>
+    <p><b>Personality:</b> {{=pet.personality}}</p>
+    </ul>
+</div>
+
+<center>
+  {{=A(T("Make a date"), _href=URL('default','add_date', args=record.id), _class='btn', _style='margin-top: 1em;')}}
+  {{pass}}
+  {{=A(T("Go back"), _href=URL('default', rc), _class='btn', _style='margin-top: 1em;')}}
+</center>

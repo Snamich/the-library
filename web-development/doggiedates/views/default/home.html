@@ -1,0 +1,12 @@
+{{extend 'plugin_layouts/layouts/KeepitSimple.html'}}
+
+<div align="center">
+  <div align="center" style="padding:40px">
+    {{=IMG(_src=URL('static', 'images/raz.png'))}}
+  </div>
+
+  {{=A(T("Manage your pets"), _href=URL('default','list_pet'), _class='btn', _style='margin-top: 1em;')}}
+  {{=A(T("Manage messages"), _href=URL('default','list_greeting'), _class='btn', _style='margin-top: 1em;')}}
+  {{=A(T("Manage dates"), _href=URL('default','list_date'), _class='btn', _style='margin-top: 1em;')}}
+  {{=A(T("Find a doggy date"), _href=URL('default','list_dog'), _class='btn', _style='margin-top: 1em;')}}
+</div>

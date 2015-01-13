@@ -1,0 +1,122 @@
+# -*- coding: utf-8 -*-
+# this file is released under public domain and you can use without limitations
+
+#########################################################################
+## This is a sample controller
+## - index is the default action of any application
+## - user is required for authentication and authorization
+## - download is for downloading files uploaded in the db (does streaming)
+## - call exposes all registered services (none by default)
+#########################################################################
+
+
+def index():
+    if auth.user:
+        redirect(URL('default', 'home'))
+    
+    return dict(message=T('Test'))
+
+#@auth.requires_login()
+def add_pet():
+    form = SQLFORM(db.pet,submit_button='Add Pet')
+    if form.process().accepted:
+        redirect(URL('default', 'list_pet'))
+    return dict(form=form)
+
+#@auth.requires_login()
+def list_pet():
+    q = db.pet.username == auth.user.email
+
+    # only let them edit picture, hobbies, and availability
+    db.pet.pet_name.writable = db.pet.pet_breed.writable = False
+
+    form = SQLFORM.grid(q,
+                        searchable=False, # should only have a couple pets, no need for searching
+                        fields=[db.pet.pet_name], # only the name is really relevant at this point
+                        csv=False,
+                        details=True, create=False, editable=True, deletable=True,)
+
+    return dict(form=form)
+
+def view_pet():
+    q = db.pet.username == user & db.pet.pet_name == name
+
+#@auth.requires_login()
+def add_greeting():
+    form = SQLFORM(db.greeting, submit_button='Send!')
+    buttons = [TAG.button('Cancel',_type="button",_onClick = "parent.location='%s' " % URL('index', 'list_greeting')]
+    if form.process().accepted:
+        redirect(URL('default', 'list_greeting'))
+    return dict(form=form)
+
+#@auth.requires_login()
+def list_greeting():
+    q = db.greeting.username_to == auth.user.email
+
+    form = SQLFORM.grid(q,
+                        searchable=True,
+                                fields=[db.greeting.username_from, db.greeting.pet_name_from],
+                        csv=False,
+                        details=True, create=False, editable=False, deletable=True,)
+
+    return dictform=form)
+
+def list_date():
+    q = db.u
+
+#@auth.requires_login()
+def home():
+    return dict()
+
+def user():
+    """
+    exposes:
+    http://..../[app]/default/user/login
+    http://..../[app]/default/user/logout
+    http://..../[app]/default/user/register
+    http://..../[app]/default/user/profile
+    http://..../[app]/default/user/retrieve_password
+    http://..../[app]/default/user/change_password
+    http://..../[app]/default/user/manage_users (requires membership in
+    use @auth.requires_login()
+        @auth.requires_membership('group name')
+        @auth.requires_permission('read','table name',record_id)
+    to decorate functions that need access control
+    """
+    return dict(form=auth())
+
+@cache.action()
+def download():
+    """
+    allows downloading of uploaded files
+    http://..../[app]/default/download/[filename]
+    """
+    return response.download(request, db)
+
+
+def call():
+    """
+    exposes services. for example:
+    http://..../[app]/default/call/jsonrpc
+    decorate with @services.jsonrpc the functions to expose
+    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
+    """
+    return service()
+
+
+@auth.requires_signature()
+def data():
+    """
+    http://..../[app]/default/data/tables
+    http://..../[app]/default/data/create/[table]
+    http://..../[app]/default/data/read/[table]/[id]
+    http://..../[app]/default/data/update/[table]/[id]
+    http://..../[app]/default/data/delete/[table]/[id]
+    http://..../[app]/default/data/select/[table]
+    http://..../[app]/default/data/search/[table]
+    but URLs must be signed, i.e. linked with
+      A('table',_href=URL('data/tables',user_signature=True))
+    or with the signed load operator
+      LOAD('default','data.load',args='tables',ajax=True,user_signature=True)
+    """
+    return dict(form=crud())

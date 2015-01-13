@@ -1,0 +1,47 @@
+{{extend 'plugin_layouts/layouts/KeepitSimple.html'}}
+
+<script>
+$(document).ready(function(){
+  var url = GMaps.staticMapURL({
+    size: [200, 200],
+    lat: {{=record.latitude}},
+    lng: {{=record.longitude}},
+markers: [
+    {lat: {{=record.latitude}}, lng: {{=record.longitude}}}]
+  });
+  $('<img/>').attr('src', url).appendTo('#static_map');
+});
+</script>
+
+<div align="center">
+  {{if record.accepted:}}
+  <h3>It's a date!</h3>
+  {{elif user == record.username2:}}
+  <h3>Date Request</h3>
+  {{else:}}
+  <h3>Awaiting Response</h3>
+  {{pass}}
+
+  <img src="{{=URL('download', args=pet1.picture)}}"
+       style="width:350px; height:350px; float:center; margin-right: 15px; margin-bottom: 15px;">
+  <img src="{{=URL('download', args=pet2.picture)}}"
+       style="width:350px; height:350px; float:center; margin-right: 15px; margin-bottom: 15px;">
+
+  <div>
+    <p>
+      {{=pet2.pet_name}} has a date with {{=pet1.pet_name}}
+      on {{=record.date_time.strftime("%d/%m/%Y")}}
+      at {{=record.date_time.strftime("%I:%M %p")}}
+    </p>
+  </div>
+
+  {{if (not record.accepted) and (user == record.username2):}}
+  Does {{=pet1.pet_name}} accept?
+  {{=form}}
+  {{pass}}
+
+  <div align="center">
+    <div id="static_map"> </div>
+  </div>
+
+</div>

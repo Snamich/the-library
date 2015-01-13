@@ -1,0 +1,22 @@
+{{extend 'plugin_layouts/layouts/KeepitSimple.html'}}
+
+<div align="center" style="padding:40px">
+  <img src="{{=URL('download', args=record.picture)}}"
+            style="width:400px; height:400px; margin-bottom: 5px;" />
+</div>
+
+<div class="center-justified">
+    <ul>
+    <p><b>Name:</b> {{=record.pet_name}}</p>
+    <p><b>Breed:</b> {{=record.breed}}</p>
+    <p><b>Hobbies:</b> {{=record.hobbies}}</p>
+    <p><b>Personality:</b> {{=record.personality}}</p>
+    </ul>
+</div>
+
+<center>
+  {{if auth.user.email != record.username:}}
+  {{=A(T("Send a greeting"), _href=URL('default','add_greeting', args=record.id), _class='btn', _style='margin-top: 1em;')}}
+  {{pass}}
+  {{=A(T("Go back"), _href=URL('default', rc), _class='btn', _style='margin-top: 1em;')}}
+</center>
